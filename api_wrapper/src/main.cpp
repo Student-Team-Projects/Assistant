@@ -2,6 +2,7 @@
 #include <string>
 #include <list>
 #include <memory>
+#include <chrono>
 
 #include "restc-cpp/restc-cpp.h"
 #include "restc-cpp/RequestBuilder.h"
@@ -13,15 +14,17 @@ int main() {
 
 	nlohmann::json payload = {
 		{"model", "llama3.2"},
-		{"prompt", "Why is the sky blue"},
+		{"prompt", "Why is the sky blue? Answer in two sentences."},
 		{"stream", false}
 	};
 
-	restClient->Process([&](restc_cpp::Context& ctx) {
-		std::cout << "Preparing..." << std::endl;
+	auto reply = std::make_unique<std::string>();
+
+	auto awaitResponse = restClient->ProcessWithPromise([&](restc_cpp::Context& ctx) {
+		std::cout << "Sending..." << std::endl;
 
         // Construct a request to the server
-        auto reply = restc_cpp::RequestBuilder(ctx)
+	    auto internalReply = restc_cpp::RequestBuilder(ctx)
 			// For testing if this even works:
             // .Get("http://jsonplaceholder.typicode.com/posts/")
             // // Add some headers for good taste
@@ -29,22 +32,29 @@ int main() {
             // .Header("X-Client-Purpose", "Testing")
 
 			// Actualy testing with local connection:
-            .Get("http://localhost:11434/api/tags")
+            // .Get("http://localhost:11434/api/tags")
 
 			// What should be working but isn't - probably misformated request or sth:
-            // .Get("http://localhost:11434/api/request")
-			// .Data("{\"model\": \"llama3.2\", \"prompt\": \"Why is the sky blue?\", \"stream\": false}")
+            .Post("http://localhost:11434/api/generate")
+	    .Data(payload.dump(4))
+	    // .Data("{\"model\": \"llama3.2\", \"prompt\": \"Why is the sky blue?\", \"stream\": false}")
             .Execute();
 
-		std::cout << "Reply: " << reply->GetBodyAsString() << std::endl;
+	    //std::cout << "Reply: " << internalReply->GetBodyAsString() << std::endl;
+	    *reply = internalReply->GetBodyAsString();
     });
 
-	std::cout << "Sent." << std::endl;
+	try {
+		awaitResponse.get();
+	} catch (const std::exception& e) {
+		std::cout << e.what() << std::endl;
+	}
 
-    // Wait for the request to finish
-    restClient->CloseWhenReady(true);
+	std::cout << *reply << std::endl;
 
-	std::cout << "Exiting..." << std::endl;
+	std::cout << "Jsoned:" << std::endl;
+	nlohmann::json answer = nlohmann::json::parse(*reply);
+	std::cout << answer.at("response") << std::endl;
 
 	return 0;
 }
