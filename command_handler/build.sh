@@ -11,13 +11,16 @@ function assistant_command_handler {
     if [[ "$last_command" == '##'* ]]; then
         command=${last_command:2}
 
+	apiPath="$(pwd)/../api_wrapper/build/api_wrapper"
+	modelResponse=$($apiPath command)
+	echo "$modelResponse"
         path="$(pwd)/build/menu_prompt"
         "$path"
         result=$?
 
         if [[ "$result" -eq 0 ]]; then
-            history -s "## ${command}"
-            $command
+            history -s "## ${modelResponse}"
+            $modelResponse
             return 0
         elif [[ "$result" -eq 1 ]]; then
             return 1
