@@ -1,4 +1,5 @@
 sudo pacman -S --needed autoconf automake autoconf-archive git cmake gcc zip unzip tar
+sleep 1
 git clone https://github.com/microsoft/vcpkg
 cd vcpkg
 ./bootstrap-vcpkg.sh
