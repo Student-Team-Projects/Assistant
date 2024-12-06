@@ -3,7 +3,7 @@
 # Prepare the cpp file to handle input / communicate with the model
 cmake -B build -S .
 cmake --build build
-sudo cmake --install build
+cmake --install build
 
 function_content=$(cat << 'EOF'
 # Function to handle copilot commands
@@ -12,10 +12,10 @@ function assistant_command_handler {
     if [[ "$last_command" == '##'* ]]; then
         command=${last_command:2}
 
-	apiPath="/usr/bin/api_wrapper"
+	apiPath="$HOME/.local/bin/api_wrapper"
 	modelResponse=$($apiPath command)
 	echo "$modelResponse"
-        menuPath="/usr/bin/menu_prompt"
+        menuPath="$HOME/.local/bin/menu_prompt"
         "$menuPath"
         result=$?
 
@@ -40,3 +40,5 @@ else
     echo "$function_content" >> ~/.bashrc
     source ~/.bashrc
 fi
+
+source ~/.bashrc

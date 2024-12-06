@@ -22,4 +22,4 @@ target_link_libraries(api_wrapper PRIVATE restc-cpp)
 target_link_libraries(api_wrapper PRIVATE nlohmann_json::nlohmann_json)
 
 # Install executable in /usr/bin
-install(TARGETS api_wrapper DESTINATION /usr/bin)
+install(TARGETS api_wrapper DESTINATION ~/.local/bin)
