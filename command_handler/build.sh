@@ -9,12 +9,15 @@ function_content=$(cat << 'EOF'
 # Function to handle copilot commands
 function assistant_command_handler {
     last_command=$(history 1 | sed 's/^[ ]*[0-9]*[ ]*//')
-    if [[ "$last_command" == '##'* ]]; then
+    if [[ "$last_command" == '###'* ]]; then
+	    apiPath="$HOME/.local/bin/api_wrapper"
+        $apiPath "load_model"
+    elif [[ "$last_command" == '##'* ]]; then
         command=${last_command:2}
 
-	apiPath="$HOME/.local/bin/api_wrapper"
-	modelResponse=$($apiPath command)
-	echo "$modelResponse"
+	    apiPath="$HOME/.local/bin/api_wrapper"
+	    modelResponse=$($apiPath command)
+	    echo "$modelResponse"
         menuPath="$HOME/.local/bin/menu_prompt"
         "$menuPath"
         result=$?

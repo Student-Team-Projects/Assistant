@@ -1,22 +1,39 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <list>
 #include <memory>
 #include <chrono>
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
 
 #include "restc-cpp/restc-cpp.h"
 #include "restc-cpp/RequestBuilder.h"
 
 #include <nlohmann/json.hpp>
 
+#include <boost/algorithm/string.hpp>
+
 int main(int argc, char** argv) {
-	auto restClient = restc_cpp::RestClient::Create();
 
 	nlohmann::json payload = {
 		{"model", "llama3.2"},
-		{"prompt", "Why is the sky blue? Answer in two sentences."},
+		{"prompt", ""},
 		{"stream", false}
 	};
+
+	struct passwd *pw = getpwuid(getuid());
+	const char* homedir = pw->pw_dir;
+	std::string rcFileName(homedir);
+	rcFileName += "/.assistantRC";
+	std::ifstream rcFile(rcFileName);
+	std::string modelName;
+	std::getline(rcFile, modelName);
+	rcFile.close();
+	boost::trim_right(modelName);
+
+	payload["model"] = modelName;
 
 	std::string question;
 
@@ -26,7 +43,15 @@ int main(int argc, char** argv) {
 		std::cin >> question;
 	}
 
-	payload["prompt"] = "Your job is to help with using linux. Answer only with a command, without and quotes, if applicable. The question is: " + question;
+	if (question == "load_model") {
+		question = "";
+	} else {
+		question = "Your job is to help with using linux. Answer only with a command without quotes. The question is: " + question;
+	}
+
+	payload["prompt"] = question;
+
+	auto restClient = restc_cpp::RestClient::Create();
 
 	auto reply = std::make_unique<std::string>();
 
@@ -57,6 +82,10 @@ int main(int argc, char** argv) {
 		awaitResponse.get();
 	} catch (const std::exception& e) {
 		std::cout << e.what() << std::endl;
+	}
+
+	if (question == "") {
+		return 0;
 	}
 
 	nlohmann::json answer = nlohmann::json::parse(*reply);
