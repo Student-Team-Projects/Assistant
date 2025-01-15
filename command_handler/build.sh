@@ -11,7 +11,7 @@ function assistant_command_handler {
     last_command=$(history 1 | sed 's/^[ ]*[0-9]*[ ]*//')
     if [[ "$last_command" == '###'* ]]; then
 	    apiPath="$HOME/.local/bin/api_wrapper"
-        $apiPath "load_model"
+        $apiPath "load_model" &
     elif [[ "$last_command" == '##'* ]]; then
         command=${last_command:2}
 

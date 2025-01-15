@@ -45,6 +45,7 @@ int main(int argc, char** argv) {
 
 	if (question == "load_model") {
 		question = "";
+		payload["stream"] = true;
 	} else {
 		question = "Your job is to help with using linux. Answer only with a command without quotes. The question is: " + question;
 	}
