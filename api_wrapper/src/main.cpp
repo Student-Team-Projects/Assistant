@@ -16,9 +16,10 @@
 #include <boost/algorithm/string.hpp>
 
 int main(int argc, char** argv) {
+    std::string promptPrefix = "You are a linux helper. Answer with just a single command with no quotes and no formatting. The question is: ";
 
 	nlohmann::json payload = {
-		{"model", "llama3.2"},
+		{"model", "codellama:7b"},
 		{"prompt", ""},
 		{"stream", false}
 	};
@@ -35,6 +36,8 @@ int main(int argc, char** argv) {
 
 	payload["model"] = modelName;
 
+    // std::cerr << modelName << std::endl;
+
 	std::string question;
 
 	if (argc > 1) {
@@ -47,7 +50,7 @@ int main(int argc, char** argv) {
 		question = "";
 		payload["stream"] = true;
 	} else {
-		question = "Your job is to help with using linux. Answer only with a command without quotes. The question is: " + question;
+		question = promptPrefix + question;
 	}
 
 	payload["prompt"] = question;
@@ -71,6 +74,7 @@ int main(int argc, char** argv) {
 
 			// What should be working but isn't - probably misformated request or sth:
             .Post("http://localhost:11434/api/generate")
+            .Header("content-type", "application/x-www-form-ur‐lencoded")
 	    .Data(payload.dump(4))
 	    // .Data("{\"model\": \"llama3.2\", \"prompt\": \"Why is the sky blue?\", \"stream\": false}")
             .Execute();

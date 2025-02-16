@@ -16,7 +16,7 @@ function assistant_command_handler {
         command=${last_command:2}
 
 	    apiPath="$HOME/.local/bin/api_wrapper"
-	    modelResponse=$($apiPath command)
+	    modelResponse=$($apiPath "$command")
 	    echo "$modelResponse"
         menuPath="$HOME/.local/bin/menu_prompt"
         "$menuPath"

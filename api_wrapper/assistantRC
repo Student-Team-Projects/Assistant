@@ -1,2 +1,8 @@
-llama3.2
+codellama:7b
 # Above line should contain name of the model you want to use.
+# Recommended ones are:
+# CAUTION: For now, it is required to manage installed models yourself, via shell program ollama, which was installed automatically.
+# By default, codellama:7b is installed.
+codellama:7b # 3.8GB
+codellama:13b # 7.4GB
+codestral # 13GB
