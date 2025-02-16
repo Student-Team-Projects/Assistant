@@ -10,6 +10,8 @@
 Assistant is an AI-supported terminal tool designed for ArchLinux. It simplifies interaction with the bash terminal by offering suggestions and guidance for command-line tasks. By using a special prefix, you can describe the task, and the assistant will provide the appropriate bash command. The tool supports several AI models and allows choosing a version suited to device’s capabilities.
 
 ## Installation
+If you have ollama already installed, it is recommended to install manually, because this project assumes you don't have it.
+
 Clone the repository and enter *assistant* directory. Choose the model, adjusting the name in *./api_wrapper/assistantRC* configuration file. For possible options see [Requirements](#requirements).
 
 To set up the environment run:
@@ -27,11 +29,18 @@ To use the model, write a query preceded by ## as in the example:
    ```
 The result is a single command to performed the described action.
 
+You can change model used by editing file ~/.assistantRC.
+
 ## <a id="requirements"></a>Requirements
-The project is intended for use on ArchLinux. It requires Cpp version X or later.
-|Model version|Minimum RAM|Recommended RAM|GPU requirements|
-|:---|:---|:---|:---|
-|llama3.2|8GB|32GB|None|
+The project is intended for use with bash. Because the idea is to run in background, this project uses sudo to register ollama service.
+
+Minimum requirements:
+16GB memory, 16GB disk space, semi-modern CPU.
+
+Recommended:
+GPU with at least 8GB of VRAM, supported by Ollama.
+
+The smallest model that makes sense is 3.8GB. The recommended one is 7.4GB, but larger ones also exist. You can run it on CPU, in which case it is loaded into system memory. You can also run it on GPU, which is much faster, and uses GPU memory; system memory usage in that case is very small.
 
 ## Project structure
 The *api_wrapper* directory contains source files related to installation, configuration and communication with the model.

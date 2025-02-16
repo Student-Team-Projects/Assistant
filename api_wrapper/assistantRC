@@ -1,8 +1,10 @@
 codellama:7b
-# Above line should contain name of the model you want to use.
-# Recommended ones are:
+# Above line should contain name of the model you want to use. Size is integral part of model name.
 # CAUTION: For now, it is required to manage installed models yourself, via shell program ollama, which was installed automatically.
+# This basically requires typin 'ollama pull <model_name>' to download, 'ollama rm <model_name>' to remove from disk, 'ollama list' to list downloaded ones.
+# Refer to ollama.com for more information.
 # By default, codellama:7b is installed.
+# Some possible models are listed below, for more refer to ollama.com/library
 codellama:7b # 3.8GB
-codellama:13b # 7.4GB
+codellama:13b # 7.4GB, recommended
 codestral # 13GB
