@@ -16,8 +16,8 @@ Clone the repository and enter *assistant* directory. Choose the model, adjustin
 
 To set up the environment run:
    ```bash
-    chmod +x build.sh
-    ./build.sh
+    chmod +x install.sh
+    ./install.sh
    ```
 The above installs the model and configures the communication. On the first request, the model must be loaded into memory. This can be done in advance to avoid long waiting time for the first response:
    ```bash
