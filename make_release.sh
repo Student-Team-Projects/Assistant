@@ -1,5 +1,9 @@
-./api_wrapper/build.sh
-./command_handler/build.sh
+cd api_wrapper
+./build.sh
+cd ../command_handler
+./build.sh
+cd ..
+rm release -r
 mkdir release
 cp api_wrapper/build/api_wrapper release/api_wrapper
 cp api_wrapper/assistantRC release/assistantRC
