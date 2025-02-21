@@ -38,7 +38,7 @@ Minimum requirements:
 16GB memory, 16GB disk space, semi-modern CPU.
 
 Recommended:
-GPU with at least 8GB of VRAM, supported by Ollama.
+GPU with at least 8GB of VRAM, supported by Ollamai, with appropriate drivers installed.
 
 The smallest model that makes sense is 3.8GB. The recommended one is 7.4GB, but larger ones also exist. You can run it on CPU, in which case it is loaded into system memory. You can also run it on GPU, which is much faster, and uses GPU memory; system memory usage in that case is very small.
 

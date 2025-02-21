@@ -43,6 +43,7 @@ int main(int argc, char** argv) {
 	if (argc > 1) {
 		question.assign(argv[1]);
 	} else {
+        std::cout << "Please write question: " << std::flush;
 		std::cin >> question;
 	}
 
@@ -52,6 +53,8 @@ int main(int argc, char** argv) {
 	} else {
 		question = promptPrefix + question;
 	}
+
+    // std::cerr << question << std::endl;
 
 	payload["prompt"] = question;
 

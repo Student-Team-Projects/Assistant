@@ -5,3 +5,5 @@ sleep 1
 sleep 1
 cd ../command_handler
 ./build.sh
+./install_bash.sh
+cd ..
