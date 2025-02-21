@@ -16,8 +16,8 @@ Clone the repository and enter *assistant* directory. Choose the model, adjustin
 
 To set up the environment run:
    ```bash
-    chmod +x build.sh
-    ./build.sh
+    chmod +x install.sh
+    ./install.sh
    ```
 The above installs the model and configures the communication. On the first request, the model must be loaded into memory. This can be done in advance to avoid long waiting time for the first response:
    ```bash
@@ -38,7 +38,7 @@ Minimum requirements:
 16GB memory, 16GB disk space, semi-modern CPU.
 
 Recommended:
-GPU with at least 8GB of VRAM, supported by Ollamai, with appropriate drivers installed.
+GPU with at least 8GB of VRAM, supported by Ollama, with appropriate drivers installed.
 
 The smallest model that makes sense is 3.8GB. The recommended one is 7.4GB, but larger ones also exist. You can run it on CPU, in which case it is loaded into system memory. You can also run it on GPU, which is much faster, and uses GPU memory; system memory usage in that case is very small.
 
