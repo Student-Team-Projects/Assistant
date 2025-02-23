@@ -1,13 +1,11 @@
-# Assistant
+# AI Linux Helper
 
-<!--
-![ArchLinux](https://img.shields.io/badge/Arch%20Linux-1793D1?logo=arch-linux&logoColor=fff&style=flat-square)
--->
-![License](https://img.shields.io/badge/license-MIT-green)
+![ArchLinux](https://img.shields.io/badge/Arch%20Linux-1793D1?logo=arch-linux&logoColor=fff&style=flat)
 ![Ollama](https://img.shields.io/badge/Ollama-AI%20Assistant-blue?logo=ollama&logoColor=white&style=flat)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ## About the Project
-Assistant is an AI-supported terminal tool designed for ArchLinux. It simplifies interaction with the bash terminal by offering suggestions and guidance for command-line tasks. By using a special prefix, you can describe the task, and the assistant will provide the appropriate bash command. The tool supports several AI models and allows choosing a version suited to device’s capabilities.
+This is an AI-supported terminal tool designed for ArchLinux. It simplifies interaction with the bash terminal by offering suggestions and guidance for command-line tasks. By using a special prefix, you can describe the task, and the assistant will provide the appropriate bash command. The tool supports several AI models and allows choosing a version suited to device’s capabilities.
 
 ## Installation
 If you have ollama already installed, it is recommended to install manually, because this project assumes you don't have it.
@@ -58,6 +56,9 @@ The *command_handler* directory contains source files connected with handling of
 
 ### Dependency management
 In this project, the c++ libraries are managed using vcpkg. The build scripts and CMake configurations use the vcpkg toolchain with static linking to include all dependencies directly in the executable.
+
+## License
+This project is licensed under the terms of the MIT license.
 
 ## Authors
 Michał Bawołek, Anna Bazan, Jakub Binięda, Anna Szymańska
