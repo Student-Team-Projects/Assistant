@@ -1,0 +1,3 @@
+MAX_CHARS = 25000
+WORKING_DIR = "."
+
