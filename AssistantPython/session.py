@@ -5,6 +5,8 @@ from google.adk.runners import Runner
 from Assistant.agent import sigma_agent
 from google.genai import types
 from AgentSimple.agent_simple import agent2
+import sys
+import subprocess
 
 import warnings
 
@@ -12,7 +14,7 @@ warnings.filterwarnings("ignore")
 
 import logging
 
-logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(level=logging.CRITICAL)
 
 session_service = InMemorySessionService()
 
@@ -27,7 +29,7 @@ async def init_session(app_name: str, user_id: str, session_id: str) -> InMemory
         user_id=user_id,
         session_id=session_id
     )
-    print(f"Session created: App='{app_name}', User='{user_id}', Session='{session_id}'")
+    logging.debug(f"Session created: App='{app_name}', User='{user_id}', Session='{session_id}'")
     return sesh
 
 
@@ -38,41 +40,48 @@ runner = Runner(
     app_name=APP_NAME,
     session_service=session_service
 )
-print(f"Runner created for agent '{runner.agent.name}'.")
+logging.debug(f"Runner created for agent '{runner.agent.name}'.")
 
 
-async def call_agent_async(query: str, runner, user_id, session_id):
-    print(f"\n>>> User Query: {query}")
+async def call_agent_async(query: str, runner, user_id, session_id) -> str:
+    logging.debug(f"\n>>> User Query: {query}")
     content = types.Content(role='user', parts=[types.Part(text=query)])
 
     final_response_text = "Agent did not produce a final response."
 
     async for event in runner.run_async(user_id=user_id, session_id=session_id, new_message=content):
-        # Sprawdzamy, czy to odpowiedź końcowa od dowolnego sub-agenta
         if event.is_final_response():
             if event.content and event.content.parts:
-                # Nadpisujemy - ostatni agent w SequentialAgent (final_presenter)
-                # będzie tym, którego wynik zobaczymy na końcu.
                 final_response_text = event.content.parts[0].text
-                print(f"[Debug] Agent finished with: {final_response_text}")
+                logging.debug(f"[Debug] Agent finished with: {final_response_text}")
 
             elif event.actions and event.actions.escalate:
                 final_response_text = f"Agent escalated: {event.error_message or 'No message.'}"
 
-        # NIE używamy tutaj 'break', aby pętla przeszła przez wszystkie kroki SequentialAgent
+    print(f"\nYour command is: {final_response_text}")
 
-    print(f"\n<<< Final Agent Result: {final_response_text}")
+    return final_response_text
 
 
-async def run_conversation():
-    await call_agent_async("Install nano",
+async def run_conversation(inp: str) -> str:
+
+    x = await call_agent_async(inp,
                            runner=runner,
                            user_id=USER_ID,
                            session_id=SESSION_ID)
 
+    return x
+
 
 if __name__ == "__main__":
+    prompt = " ".join(sys.argv[1:])
     try:
-        asyncio.run(run_conversation())
+        response = asyncio.run(run_conversation(prompt))
+        i = input(f"Run this command [y/n]")
+        if i.lower() == 'y':
+            subprocess.run(response, shell=True)
+        else:
+            sys.exit(0)
+
     except Exception as e:
         print(f"An error occurred: {e}")
