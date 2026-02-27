@@ -1,5 +1,5 @@
 import os
-
+import sys
 from google.genai import types
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
