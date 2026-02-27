@@ -28,6 +28,14 @@ The setup script:
 * configures communication components,
 * updates the terminal alias used to invoke the assistant.
 
+In case of using Ollama as the model provider, configure it before running the assistant by executing:
+
+sudo pacman -Syu ollama
+sudo systemctl start ollama
+ollama pull mistral
+
+These commands install Ollama, start the Ollama service, and download the required model used by the assistant.
+
 After installation, configure the environment file.
 In `AssistantPython/Assistant/.env` set the following variables:
 
@@ -36,6 +44,7 @@ In `AssistantPython/Assistant/.env` set the following variables:
 * `MODEL`
 
 Variables names and their values should be adjusted depending on the selected model, analogously to the configuration used in `model_setup.py`.
+
 
 To use the model, write a query preceded by `ai` as in the example:
 
