@@ -61,4 +61,5 @@ In this project, the c++ libraries are managed using vcpkg. The build scripts an
 This project is licensed under the terms of the MIT license.
 
 ## Authors
-Michał Bawołek, Anna Bazan, Jakub Binięda, Anna Szymańska
+Michał Bawołek, Anna Bazan, Jakub Binięda, Anna Szymańska, Szymon Gaczoł, Filip Szlachetka, Jakub Wolny, Olgierd Zygmunt
+
