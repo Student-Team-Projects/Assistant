@@ -63,7 +63,7 @@ The alias mentioned above can be changed in *setup.sh* file.
 
 
 ## <a id="requirements"></a>Requirements
-The project is intended for use with bash. Because the idea is to run in background, this project uses sudo to register ollama service.
+The project is intended for use with bash. In case of using Ollama, it must meet requirements below.
 
 Minimum requirements:
 16GB memory, 16GB disk space, semi-modern CPU.
