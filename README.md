@@ -37,12 +37,6 @@ In `AssistantPython/Assistant/.env` set the following variables:
 
 Variables names and their values should be adjusted depending on the selected model, analogously to the configuration used in `model_setup.py`.
 
-On the first request, the model must be loaded into memory. This can be done in advance to avoid long waiting time for the first response:
-
-```bash
-###
-```
-
 To use the model, write a query preceded by `ai` as in the example:
 
 ```bash
@@ -65,19 +59,6 @@ GPU with at least 8GB of VRAM, supported by Ollama, with appropriate drivers ins
 
 The smallest model that makes sense is 3.8GB. The recommended one is 7.4GB, but larger ones also exist. You can run it on CPU, in which case it is loaded into system memory. You can also run it on GPU, which is much faster, and uses GPU memory; system memory usage in that case is very small.
 
-## Project structure
-The *api_wrapper* directory contains source files related to installation, configuration and communication with the model.
-- *build.sh* - configures the build environment, specifying the vcpkg toolchain for dependency management, and installs the assistantRC configuration file to home directory
-- *install.sh* - installs necessary dependencies using pacman and vcpkg and pulls the model from the API
-- *run.sh* - executes the api_wrapper binary to initiate communication with the model
-- *assistantRC* - stores the model version
-- *CMakeLists.txt* - defines project metadata, locates dependencies (Boost, restc-cpp, nlohmann-json) using vcpkg, links libraries to the executable, and sets the installation path to *~/.local/bin*
-- *src/main.cpp* - manages API requests and responses, handles user input, and processes model output
-
-The *command_handler* directory contains source files connected with handling of special commands at the level of the terminal.
-- *build.sh* - builds the *menu_prompt* target and defines a custom function for PROMPT_COMMAND trigger to processes special commands (with ### or ## prefix) in *~/.bashrc* file
-- *CMakeLists.txt* - configures the installation of *menu_prompt* executable to the *~/.local/bin* directory
-- *menu_prompt.cpp* - displays the response from the model and confirms its execution
 
 ## License
 This project is licensed under the terms of the MIT license.
