@@ -2,9 +2,38 @@ from google.adk.agents import Agent, LoopAgent, SequentialAgent, BaseAgent
 from google.adk.tools.tool_context import ToolContext
 from .model_setup import get_model
 
+from .functions.get_file_content import get_file_content
+from .functions.get_files_info import get_files_info
+from .functions.run_python_file import run_python_file
+from .functions.write_file import write_file
+from .prompts import system_prompt
+from .config import WORKING_DIR
+
 STATE_INIT = "init"
 STATE_COMMAND = "command"
 STATE_FEEDBACK = "feedback"
+
+
+# Tool wrappers to inject WORKING_DIR
+def agent_get_file_content(file_path: str):
+    """"Retrieves the content of a specified file."""
+    return get_file_content(WORKING_DIR, file_path)
+
+
+def agent_get_files_info(paths: list[str] = None):
+    """"Lists files and directories."""
+    # Handle optional paths arg which might be None or empty
+    return get_files_info(WORKING_DIR, paths)
+
+
+def agent_run_python_file(file_path: str):
+    """"Executes a python file."""
+    return run_python_file(WORKING_DIR, file_path)
+
+
+def agent_write_file(file_path: str, content: str):
+    """"Writes content to a file."""
+    return write_file(WORKING_DIR, file_path, content)
 
 
 def exit_loop(tool_context: ToolContext):
@@ -12,6 +41,11 @@ def exit_loop(tool_context: ToolContext):
     tool_context.actions.escalate = True
     return {}
 
+
+def exit_loop(tool_context: ToolContext):
+    print(f"[Tool Call] exit_loop triggered by {tool_context.agent_name}")
+    tool_context.actions.escalate = True
+    return {}
 
 
 init_agent = Agent(
@@ -38,13 +72,24 @@ Respond with EXACTLY ONE VALID Arch Linux command.
 Generate a command that fulfills this description:
 {{init}}
 
+When a user asks about command syntax, make a function call plan. You can perform the following operations:
+- Read file contents (specifically 'arch_manual.txt')
+- List files and directories
+
 Rules:
+- When a user asks about command syntax, make a function call plan. You can perform the following operations:
+    - Read file contents (specifically get_file_content(file_path="arch_manual.txt")')
+    - List files and directories
 - single command only (no &&, ;, pipes)
 - allowed tools: pacman, yay, systemctl, journalctl, arch-specific utilities
 - use sudo ONLY when required
 - no comments, no explanations, no formatting
 - output ONLY raw command text
 """,
+    tools=[
+        agent_get_file_content,
+        agent_get_files_info,
+    ],  # Tylko czytanie, bez pisania/uruchamiania
     output_key=STATE_COMMAND,
 )
 
@@ -132,9 +177,9 @@ final_presenter_agent = Agent(
     description="Outputs the final validated command to the user.",
     instruction="""
     You are a strict output interface.
-    
+
     Your task is to simply output the value from: {{command}}
-    
+
     Rules:
     - Output ONLY the raw command text.
     - Do NOT add markdown formatting (no backticks).
@@ -154,4 +199,3 @@ sigma_agent = SequentialAgent(
     ],
     description="Generates exactly one Arch Linux command based on the user's request.",
 )
-

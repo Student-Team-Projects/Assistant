@@ -1,0 +1,11 @@
+ls
+Explore the Linux ls command and its practical applications for managing files and directories. Learn how to utilize various options to retrieve detailed file information and navigate directory structures effectively.
+
+cd
+Explore the Linux cd command, learn how to navigate the file system, and understand the difference between relative and absolute paths.
+
+pwd
+Explore the Linux pwd command, its purpose, and practical examples of using it with other commands to manage files and directories.
+
+mkdir
+Explore the mkdir command in Linux, learn how to create directories, manage permissions, and work with nested directories through practical examples.
