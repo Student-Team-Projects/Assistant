@@ -4,36 +4,36 @@ PROJECT_ROOT=$(pwd)
 VENV_PATH="$PROJECT_ROOT/.venv"
 PYTHON_SCRIPT="$PROJECT_ROOT/test/AssistantPython/session.py"
 
-echo "--- Konfiguracja środowiska ---"
+echo "--- Environment Configuration ---"
 
-# 1. Tworzenie środowiska
+# 1. Environment creation
 if [ ! -d "$VENV_PATH" ]; then
     python -m venv "$VENV_PATH"
 fi
 
-# 2. AKTUALIZACJA I INSTALACJA (Z użyciem pełnej ścieżki do pip w venv)
-echo "Instalacja bibliotek..."
-# Używamy bezpośrednio pip z venv, co zastępuje potrzebę 'source activate' w skrypcie
+# 2. UPDATE AND INSTALLATION (Using the full path to pip in venv)
+echo "Installing libraries..."
+# We use pip directly from venv, which replaces the need for 'source activate' in the script
 "$VENV_PATH/bin/pip" install --upgrade pip
 if [ -f "requirements.txt" ]; then
     "$VENV_PATH/bin/pip" install -r requirements.txt
 else
-    echo "BŁĄD: Brak requirements.txt"
+    echo "ERROR: requirements.txt not found"
     exit 1
 fi
 
-# 3. Dodawanie aliasu do .bashrc
+# 3. Adding alias to .bashrc
 ALIAS_LINE="alias ai='$VENV_PATH/bin/python $PYTHON_SCRIPT'"
 
-# Sprawdzanie czy alias już jest, jeśli nie - dodaj
+# Check if the alias already exists; if not, add it
 if ! grep -q "alias ai=" ~/.bashrc; then
     echo -e "\n# AI Assistant\n$ALIAS_LINE" >> ~/.bashrc
-    echo "Dodano alias do .bashrc"
+    echo "Added alias to .bashrc"
 else
-    # Jeśli jest, podmień go na aktualną ścieżkę (przydatne przy przenoszeniu folderu)
+    # If it exists, update it with the current path (useful if moving the folder)
     sed -i "s|alias ai=.*|$ALIAS_LINE|" ~/.bashrc
-    echo "Zaktualizowano istniejący alias."
+    echo "Updated existing alias."
 fi
 
-echo "--- Gotowe! ---"
-echo "Wpisz: source ~/.bashrc"
+echo "--- Done! ---"
+echo "Run: source ~/.bashrc"
