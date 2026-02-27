@@ -9,8 +9,6 @@ This is an AI-supported terminal tool designed for ArchLinux. It simplifies inte
 
 ## Installation
 
-If you have ollama already installed, it is recommended to install it manually.
-
 Clone the repository and enter *AssistantPython* directory.
 
 To set up the environment run:
