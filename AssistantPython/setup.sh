@@ -1,8 +1,8 @@
 #!/bin/bash
 
-PROJECT_ROOT=$(pwd)
+PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 VENV_PATH="$PROJECT_ROOT/.venv"
-PYTHON_SCRIPT="$PROJECT_ROOT/test/AssistantPython/session.py"
+PYTHON_SCRIPT="$PROJECT_ROOT/AssistantPython/session.py"
 
 echo "--- Environment Configuration ---"
 
