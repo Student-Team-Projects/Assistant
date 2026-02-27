@@ -16,5 +16,5 @@ def get_model():
     elif MODEL_SOURCE == "google":
         GEMINI_MODEL = os.getenv("GEMINI_MODEL")
         GEMINI_KEY = os.getenv("GEMINI_API_KEY")
-        return LiteLlm(f'google/{GEMINI_MODEL}')
+        return LiteLlm(f'gemini/{GEMINI_MODEL}')
     return None
