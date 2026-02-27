@@ -1,14 +1,9 @@
 import os
-import sys
+
 from google.genai import types
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-
-if SCRIPT_DIR not in sys.path:
-    sys.path.insert(0, SCRIPT_DIR)
-    
-from config import MAX_CHARS
-
+MAX_CHARS = 25000
+WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def get_file_content(working_directory, file_path):
     try:
