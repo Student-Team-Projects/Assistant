@@ -14,7 +14,17 @@ warnings.filterwarnings("ignore")
 
 import logging
 
-logging.basicConfig(level=logging.CRITICAL)
+def setup_logging():
+    raw_level = os.getenv("AI_LOG_LEVEL", "CRITICAL").upper()
+    valid_levels = logging.getLevelNamesMapping()
+    log_level = valid_levels.get(raw_level, logging.INFO)
+
+    logging.basicConfig(
+        level=log_level,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    )
+
+setup_logging()
 
 session_service = InMemorySessionService()
 
