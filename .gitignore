@@ -1,1 +1,9 @@
-/AssistantPython/Assistant/.env
+# Python
+__pycache__/
+*.py[codz]
+
+# Environment
+.env
+
+# IDE
+.idea/
